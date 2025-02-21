@@ -23,12 +23,16 @@ export interface GenericTableProps<T> {
   columns: TableColumn<T>[];
   data: T[];
   className?: string;
+  actionsHeader?: string;
+  ActionsComponents?: React.ReactNode[];
 }
 
 export default function GenericTable<T extends object>({
   columns,
   data,
   className = "",
+  actionsHeader,
+  ActionsComponents,
 }: GenericTableProps<T>) {
   return (
     <div className={`overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ${className}`}>
@@ -46,6 +50,14 @@ export default function GenericTable<T extends object>({
                     {column.header}
                   </TableCell>
                 ))}
+                {actionsHeader && (
+                  <TableCell
+                    isHeader
+                    className={`px-5 py-3 font-medium text-gray-500 text-end text-theme-xs dark:text-gray-400`}
+                  >
+                    {actionsHeader}
+                  </TableCell>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -62,6 +74,17 @@ export default function GenericTable<T extends object>({
                         : String(row[column.key])}
                     </TableCell>
                   ))}
+                  {actionsHeader !== undefined && ActionsComponents && (
+                    <TableCell
+                      className={`px-4 py-3 flex items-center justify-end gap-2 text-gray-500 text-end text-theme-sm dark:text-gray-400`}
+                    >
+                      {ActionsComponents.map((component, index) => (
+                        <React.Fragment key={index}>
+                          {component}
+                        </React.Fragment>
+                      ))}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

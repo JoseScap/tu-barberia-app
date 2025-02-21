@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 
-interface ButtonProps {
-  children: ReactNode; // Button text or content
+interface ButtonProps extends PropsWithChildren {
   size?: "sm" | "md"; // Button size
   variant?: "primary" | "outline"; // Button variant
   startIcon?: ReactNode; // Icon before the text
@@ -46,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
     >
       {startIcon && <span className="flex items-center">{startIcon}</span>}
-      {children}
+      {children && <span className="flex items-center">{children}</span>}
       {endIcon && <span className="flex items-center">{endIcon}</span>}
     </button>
   );

@@ -3,6 +3,8 @@ import GenericTable, { TableColumn, ColumnValue } from "@/components/tables/Gene
 
 import React from "react";
 import Badge from "@/components/ui/badge/Badge";
+import Button from "@/components/ui/button/Button";
+import { PencilIcon, TrashBinIcon } from "@/icons";
 
 interface Barber {
   id: string;
@@ -52,12 +54,20 @@ const tableData: Barber[] = [
   },
 ];
 
-export default function BasicTables() {
+export default function BarbersPage() {
   return (
     <div>
       <PageBreadcrumb pageTitle="Barberos" />
       <div className="space-y-6">
-        <GenericTable columns={columns} data={tableData} />
+        <GenericTable<Barber>
+          columns={columns}
+          data={tableData}
+          actionsHeader="Acciones"
+          ActionsComponents={[
+            <Button key="edit-barber" size="md" variant="outline" startIcon={<PencilIcon />} />,
+            <Button key="delete-barber" size="md" variant="outline" startIcon={<TrashBinIcon />} />,
+          ]}
+        />
       </div>
     </div>
   );
