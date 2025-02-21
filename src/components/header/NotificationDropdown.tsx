@@ -60,8 +60,7 @@ export default function NotificationDropdown() {
             Notification
           </h5>
           <button
-            onClick={toggleDropdown} className="dropdown-toggle"
-            className="text-gray-500 transition dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            onClick={toggleDropdown} className="dropdown-toggle text-gray-500 transition dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
           >
             <svg
               className="fill-current"
