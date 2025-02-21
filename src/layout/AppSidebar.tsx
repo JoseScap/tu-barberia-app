@@ -29,9 +29,32 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    name: "Inicio",
+    path: "/auth/dashboard",
   },
+  {
+    icon: <GridIcon />,
+    name: "Cortes",
+    path: "/auth/haircuts",
+  },
+  {
+    icon: <GridIcon />,
+    name: "Servicios",
+    path: "/auth/services",
+  },
+  {
+    icon: <GridIcon />,
+    name: "Productos",
+    path: "/auth/products",
+  },
+  {
+    icon: <GridIcon />,
+    name: "Barberos",
+    path: "/auth/barbers",
+  },
+];
+
+const othersItems: NavItem[] = [
   {
     icon: <CalenderIcon />,
     name: "Calendar",
@@ -61,9 +84,6 @@ const navItems: NavItem[] = [
       { name: "404 Error", path: "/error-404", pro: false },
     ],
   },
-];
-
-const othersItems: NavItem[] = [
   {
     icon: <PieChartIcon />,
     name: "Charts",
