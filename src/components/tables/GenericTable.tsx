@@ -7,11 +7,15 @@ import {
   TableRow,
 } from "../ui/table";
 
+export type ColumnKey<T> = keyof T;
+export type ColumnValue<T> = T[ColumnKey<T>];
+export type ColumnAlign = "start" | "center" | "end";
+
 // Definimos los tipos para las columnas
 export interface TableColumn<T> {
-  key: keyof T;
+  key: ColumnKey<T>;
   header: string;
-  render?: (value: unknown, row: T) => React.ReactNode;
+  render?: (value: ColumnValue<T>, row: T) => React.ReactNode;
 }
 
 // Props del componente
@@ -37,7 +41,7 @@ export default function GenericTable<T extends object>({
                   <TableCell
                     key={String(column.key)}
                     isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                    className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400`}
                   >
                     {column.header}
                   </TableCell>
@@ -51,7 +55,7 @@ export default function GenericTable<T extends object>({
                   {columns.map((column) => (
                     <TableCell
                       key={String(column.key)}
-                      className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
+                      className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400`}
                     >
                       {column.render
                         ? column.render(row[column.key], row)
