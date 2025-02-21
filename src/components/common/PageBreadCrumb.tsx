@@ -3,17 +3,25 @@ import React from "react";
 
 interface BreadcrumbProps {
   pageTitle: string;
+  TitleExtraComponent?: React.ReactNode;
   RightComponent?: React.ReactNode;
+  id?: string;
 }
 
-const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle, RightComponent }) => {
+const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle, TitleExtraComponent, RightComponent, id }) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
       <h2
-        className="text-xl font-semibold text-gray-800 dark:text-white/90"
+        className="text-xl font-semibold text-gray-800 dark:text-white/90 flex items-center gap-2"
         x-text="pageName"
+        id={id}
       >
         {pageTitle}
+        {TitleExtraComponent && (
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {TitleExtraComponent}
+          </span>
+        )}
       </h2>
       <nav className="flex items-center gap-8">
         {RightComponent && (

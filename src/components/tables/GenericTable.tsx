@@ -25,6 +25,7 @@ export interface GenericTableProps<T> {
   className?: string;
   actionsHeader?: string;
   ActionsComponents?: React.ReactNode[];
+  id?: string;
 }
 
 export default function GenericTable<T extends object>({
@@ -33,12 +34,13 @@ export default function GenericTable<T extends object>({
   className = "",
   actionsHeader,
   ActionsComponents,
+  id,
 }: GenericTableProps<T>) {
   return (
     <div className={`overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ${className}`}>
       <div className="max-w-full overflow-x-auto">
         <div className="min-w-full">
-          <Table>
+          <Table id={id}>
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow>
                 {columns.map((column) => (

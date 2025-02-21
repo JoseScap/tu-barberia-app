@@ -8,6 +8,7 @@ interface ButtonProps extends PropsWithChildren {
   onClick?: () => void; // Click handler
   disabled?: boolean; // Disabled state
   className?: string; // Disabled state
+  id?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   className = "",
   disabled = false,
+  id,
 }) => {
   // Size Classes
   const sizeClasses = {
@@ -43,6 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       }`}
       onClick={onClick}
       disabled={disabled}
+      id={id}
     >
       {startIcon && <span className="flex items-center">{startIcon}</span>}
       {children && <span className="flex items-center">{children}</span>}
