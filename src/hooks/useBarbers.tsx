@@ -59,52 +59,52 @@ interface UseBarbersReturn {
   columns: TableColumn<Barber>[]
   newBarber: Barber
   setNewBarber: Dispatch<SetStateAction<Barber>>
-  showNewBarberForm: boolean
-  toggleNewBarberForm: () => void
-  addBarber: () => void
-  editBarber: Barber | null
-  changeEditBarber: (barberId?: string) => void
-  updateBarber: () => void
+  isCreatingBarber: boolean
+  toggleCreateForm: () => void
+  createBarber: () => void
+  selectedBarber: Barber | null
+  selectBarberForEdit: (barberId?: string) => void
+  updateSelectedBarber: () => void
 }
 
 // Hook Implementation
 const useBarbers = (): UseBarbersReturn => {
   const [barbers, setBarbers] = useState<Barber[]>(MOCK_BARBERS)
-  const [showNewBarberForm, setShowNewBarberForm] = useState(false)
+  const [isCreatingBarber, setIsCreatingBarber] = useState(false)
   const [newBarber, setNewBarber] = useState<Barber>(INITIAL_BARBER)
-  const [editBarber, setEditBarber] = useState<Barber | null>(null)
+  const [selectedBarber, setSelectedBarber] = useState<Barber | null>(null)
 
-  const toggleNewBarberForm = () => {
-    setShowNewBarberForm(!showNewBarberForm)
+  const toggleCreateForm = () => {
+    setIsCreatingBarber(!isCreatingBarber)
     setNewBarber(INITIAL_BARBER)
   }
 
-  const addBarber = () => {
+  const createBarber = () => {
     const newBarberWithId: Barber = {
       ...newBarber,
       id: (barbers.length + 1).toString()
     }
     setBarbers([...barbers, newBarberWithId])
-    toggleNewBarberForm()
+    toggleCreateForm()
   }
 
-  const changeEditBarber = (barberId?: string) => {
+  const selectBarberForEdit = (barberId?: string) => {
     if (!barberId) {
-      setEditBarber(null)
+      setSelectedBarber(null)
       return
     }
 
     const barber = barbers.find((barber) => barber.id === barberId)
     if (barber) {
-      setEditBarber(barber)
+      setSelectedBarber(barber)
     }
   }
 
-  const updateBarber = () => {
+  const updateSelectedBarber = () => {
     setBarbers(barbers.map((b) => 
-      b.id === editBarber?.id ? editBarber : b
+      b.id === selectedBarber?.id ? selectedBarber : b
     ))
-    setEditBarber(null)
+    setSelectedBarber(null)
   }
 
   return {
@@ -112,12 +112,12 @@ const useBarbers = (): UseBarbersReturn => {
     columns: TABLE_COLUMNS,
     newBarber,
     setNewBarber,
-    showNewBarberForm,
-    toggleNewBarberForm,
-    addBarber,
-    editBarber,
-    changeEditBarber,
-    updateBarber
+    isCreatingBarber,
+    toggleCreateForm,
+    createBarber,
+    selectedBarber,
+    selectBarberForEdit,
+    updateSelectedBarber
   }
 }
 

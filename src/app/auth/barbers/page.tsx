@@ -116,15 +116,15 @@ const getTourSteps = () => [
 export default function BarbersPage() {
   const {
     barbers,
-    showNewBarberForm,
-    toggleNewBarberForm,
+    isCreatingBarber,
+    toggleCreateForm,
     columns,
     newBarber,
     setNewBarber,
-    addBarber,
-    editBarber,
-    changeEditBarber,
-    updateBarber
+    createBarber,
+    selectedBarber,
+    selectBarberForEdit,
+    updateSelectedBarber
   } = useBarbers()
 
   const startTour = () => {
@@ -154,28 +154,28 @@ export default function BarbersPage() {
             size="sm"
             startIcon={<PlusIcon />}
             id="add-barber-btn"
-            onClick={toggleNewBarberForm}
+            onClick={toggleCreateForm}
           />
         }
       />
 
-      {showNewBarberForm && (
+      {isCreatingBarber && (
         <div className="space-y-6 mb-6">
           <BarberForm
             barber={newBarber}
-            onSubmit={addBarber}
-            onCancel={toggleNewBarberForm}
+            onSubmit={createBarber}
+            onCancel={toggleCreateForm}
             onChange={setNewBarber}
           />
         </div>
       )}
 
-      {editBarber && (
+      {selectedBarber && (
         <div className="space-y-6 mb-6">
           <BarberForm
-            barber={editBarber}
-            onSubmit={updateBarber}
-            onCancel={() => changeEditBarber()}
+            barber={selectedBarber}
+            onSubmit={updateSelectedBarber}
+            onCancel={() => selectBarberForEdit()}
             onChange={setNewBarber}
             isEditing
           />
@@ -188,7 +188,7 @@ export default function BarbersPage() {
           data={barbers}
           actionsHeader="Acciones"
           id="barbers-table"
-          onEdit={(row) => changeEditBarber(row.id)}
+          onEdit={(row) => selectBarberForEdit(row.id)}
         />
       </div>
     </div>
