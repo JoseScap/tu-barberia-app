@@ -8,24 +8,23 @@ import 'driver.js/dist/driver.css'
 import ComponentCard from '@/components/common/ComponentCard'
 import Label from '@/components/form/Label'
 import Input from '@/components/form/input/InputField'
-import useBarbers, { Barber } from '@/hooks/useBarbers'
+import useBarbers from '@/hooks/useBarbers'
 import { driver, DriveStep } from 'driver.js'
+import { Barber, BarberCreateRequest, BarberUpdateRequest } from '@/schema/Barber'
 
 // Components
-const BarberForm = ({
+const BarberCreateForm = ({
   barber,
   onSubmit,
   onCancel,
   onChange,
-  isEditing = false
 }: {
-  barber: Barber
+  barber: BarberCreateRequest
   onSubmit: () => void
   onCancel: () => void
-  onChange: (barber: Barber) => void
-  isEditing?: boolean
+  onChange: (barber: BarberCreateRequest) => void
 }) => (
-  <ComponentCard title={isEditing ? "Editar Barbero" : "Agregar Barbero"}>
+  <ComponentCard title="Agregar Barbero">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <Label>Nombre Completo</Label>
@@ -42,7 +41,7 @@ const BarberForm = ({
             type="date"
             id="datePicker"
             name="datePicker"
-            defaultValue={isEditing ? new Date(barber.hiringDate).toISOString().split('T')[0] : barber.hiringDate}
+            defaultValue={new Date(barber.hiringDate).toISOString().split('T')[0]}
             onChange={(e) => onChange({ ...barber, hiringDate: e.target.value })}
           />
           <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
@@ -52,7 +51,60 @@ const BarberForm = ({
       </div>
       <div className="col-span-full space-y-2">
         <Button className="w-full" size="sm" onClick={onSubmit}>
-          {isEditing ? 'Actualizar' : 'Agregar'} Barbero
+          Agregar Barbero
+        </Button>
+        <Button
+          className="w-full"
+          size="sm"
+          variant="outline"
+          onClick={onCancel}
+        >
+          Cancelar
+        </Button>
+      </div>
+    </div>
+  </ComponentCard>
+)
+
+const BarberUpdateForm = ({
+  barber,
+  onSubmit,
+  onCancel,
+  onChange,
+}: {
+  barber: BarberUpdateRequest
+  onSubmit: () => void
+  onCancel: () => void
+  onChange: (barber: BarberUpdateRequest) => void
+}) => (
+  <ComponentCard title="Editar Barbero">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <Label>Nombre Completo</Label>
+        <Input
+          type="text"
+          defaultValue={barber.fullName}
+          onChange={(e) => onChange({ ...barber, fullName: e.target.value })}
+        />
+      </div>
+      <div>
+        <Label htmlFor="datePicker">Fecha de Contratación</Label>
+        <div className="relative">
+          <Input
+            type="date"
+            id="datePicker"
+            name="datePicker"
+            defaultValue={barber.hiringDate ? new Date(barber.hiringDate).toISOString().split('T')[0] : ''}
+            onChange={(e) => onChange({ ...barber, hiringDate: e.target.value })}
+          />
+          <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+            <CalenderIcon />
+          </span>
+        </div>
+      </div>
+      <div className="col-span-full space-y-2">
+        <Button className="w-full" size="sm" onClick={onSubmit}>
+          Actualizar Barbero
         </Button>
         <Button
           className="w-full"
@@ -124,7 +176,8 @@ export default function BarbersPage() {
     createBarber,
     selectedBarber,
     selectBarberForEdit,
-    updateSelectedBarber
+    updateSelectedBarber,
+    updateBarberForm,
   } = useBarbers()
 
   const startTour = () => {
@@ -161,7 +214,7 @@ export default function BarbersPage() {
 
       {isCreatingBarber && (
         <div className="space-y-6 mb-6">
-          <BarberForm
+          <BarberCreateForm
             barber={newBarber}
             onSubmit={createBarber}
             onCancel={toggleCreateForm}
@@ -172,12 +225,11 @@ export default function BarbersPage() {
 
       {selectedBarber && (
         <div className="space-y-6 mb-6">
-          <BarberForm
+          <BarberUpdateForm
             barber={selectedBarber}
             onSubmit={updateSelectedBarber}
             onCancel={() => selectBarberForEdit()}
-            onChange={setNewBarber}
-            isEditing
+            onChange={updateBarberForm}
           />
         </div>
       )}
@@ -188,7 +240,7 @@ export default function BarbersPage() {
           data={barbers}
           actionsHeader="Acciones"
           id="barbers-table"
-          onEdit={(row) => selectBarberForEdit(row.id)}
+          onEdit={(row) => selectBarberForEdit(row._id)}
         />
       </div>
     </div>

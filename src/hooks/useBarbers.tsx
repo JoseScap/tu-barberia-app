@@ -1,37 +1,16 @@
 import { ColumnValue, TableColumn } from '@/components/tables/GenericTable'
 import Badge from '@/components/ui/badge/Badge'
-import { Dispatch, SetStateAction, useState } from 'react'
-
-// Types
-export type Barber = {
-  id: string
-  fullName: string
-  status: boolean
-  hiringDate: string
-}
+import { Barber, BarberCreateRequest, BarberResponse, BarberUpdateRequest } from '@/schema/Barber'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import axios, { AxiosResponse } from 'axios'
+import { Types } from 'mongoose'
 
 // Constants
-const INITIAL_BARBER: Barber = {
-  id: '',
+const INITIAL_BARBER: BarberCreateRequest = {
   fullName: '',
   status: true,
   hiringDate: new Date().toISOString().split('T')[0]
 }
-
-const MOCK_BARBERS: Barber[] = [
-  {
-    id: '1',
-    fullName: 'Juan Perez',
-    status: true,
-    hiringDate: '01-01-2024'
-  },
-  {
-    id: '2',
-    fullName: 'Pedro Martinez',
-    status: true,
-    hiringDate: '01-01-2024'
-  }
-]
 
 const TABLE_COLUMNS: TableColumn<Barber>[] = [
   {
@@ -57,55 +36,69 @@ const TABLE_COLUMNS: TableColumn<Barber>[] = [
 interface UseBarbersReturn {
   barbers: Barber[]
   columns: TableColumn<Barber>[]
-  newBarber: Barber
-  setNewBarber: Dispatch<SetStateAction<Barber>>
+  newBarber: BarberCreateRequest
+  setNewBarber: Dispatch<SetStateAction<BarberCreateRequest>>
   isCreatingBarber: boolean
   toggleCreateForm: () => void
   createBarber: () => void
-  selectedBarber: Barber | null
-  selectBarberForEdit: (barberId?: string) => void
+  selectedBarber: BarberUpdateRequest | null
+  selectBarberForEdit: (barberId?: Types.ObjectId) => void
   updateSelectedBarber: () => void
+  updateBarberForm: (barber: BarberUpdateRequest) => void
 }
 
 // Hook Implementation
 const useBarbers = (): UseBarbersReturn => {
-  const [barbers, setBarbers] = useState<Barber[]>(MOCK_BARBERS)
+  const [barbers, setBarbers] = useState<Barber[]>([])
   const [isCreatingBarber, setIsCreatingBarber] = useState(false)
-  const [newBarber, setNewBarber] = useState<Barber>(INITIAL_BARBER)
-  const [selectedBarber, setSelectedBarber] = useState<Barber | null>(null)
+  const [newBarber, setNewBarber] = useState<BarberCreateRequest>(INITIAL_BARBER)
+  const [selectedBarber, setSelectedBarber] = useState<BarberUpdateRequest | null>(null)
 
   const toggleCreateForm = () => {
     setIsCreatingBarber(!isCreatingBarber)
     setNewBarber(INITIAL_BARBER)
   }
 
-  const createBarber = () => {
-    const newBarberWithId: Barber = {
-      ...newBarber,
-      id: (barbers.length + 1).toString()
-    }
-    setBarbers([...barbers, newBarberWithId])
+  const getBarbers = async () => {
+    const response: AxiosResponse<Barber[]> = await axios.get('/api/barber')
+    setBarbers(response.data)
+  }
+
+  const createBarber = async () => {
+    await axios.post('/api/barber', newBarber)
+    await getBarbers()
     toggleCreateForm()
   }
 
-  const selectBarberForEdit = (barberId?: string) => {
+  const selectBarberForEdit = (barberId?: Types.ObjectId) => {
     if (!barberId) {
       setSelectedBarber(null)
       return
     }
-
-    const barber = barbers.find((barber) => barber.id === barberId)
+    const barber = barbers.find(b => b._id.toString() === barberId.toString())
     if (barber) {
       setSelectedBarber(barber)
     }
   }
 
-  const updateSelectedBarber = () => {
-    setBarbers(barbers.map((b) => 
-      b.id === selectedBarber?.id ? selectedBarber : b
-    ))
-    setSelectedBarber(null)
+  const updateBarberForm = (barber: BarberUpdateRequest) => {
+    setSelectedBarber(barber)
   }
+
+  const updateSelectedBarber = async () => {
+    if (!selectedBarber) return
+    try {
+      await axios.put(`/api/barber`, selectedBarber)
+      await getBarbers()
+      setSelectedBarber(null)
+    } catch (error) {
+      console.error('Error updating barber:', error)
+    }
+  }
+
+  useEffect(() => {
+    getBarbers()
+  }, [])
 
   return {
     barbers,
@@ -117,7 +110,8 @@ const useBarbers = (): UseBarbersReturn => {
     createBarber,
     selectedBarber,
     selectBarberForEdit,
-    updateSelectedBarber
+    updateSelectedBarber,
+    updateBarberForm
   }
 }
 
