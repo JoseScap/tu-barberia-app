@@ -1,6 +1,6 @@
 import { ColumnValue, TableColumn } from '@/components/tables/GenericTable'
 import Badge from '@/components/ui/badge/Badge'
-import { Barber, BarberCreateRequest, BarberResponse, BarberUpdateRequest } from '@/schema/Barber'
+import { Barber, BarberCreateRequest, BarberUpdateRequest } from '@/schema/Barber'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { Types } from 'mongoose'
@@ -88,7 +88,7 @@ const useBarbers = (): UseBarbersReturn => {
   const updateSelectedBarber = async () => {
     if (!selectedBarber) return
     try {
-      await axios.put(`/api/barber`, selectedBarber)
+      await axios.put('/api/barber', selectedBarber)
       await getBarbers()
       setSelectedBarber(null)
     } catch (error) {

@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose"
+import { model, models, Schema, Types } from 'mongoose'
 
 // Domain Types
 export type Barber = {
@@ -11,7 +11,7 @@ export type Barber = {
 export const BarberSchema = new Schema<Barber>({
   fullName: { type: String, required: true },
   status: { type: Boolean, required: true },
-  hiringDate: { type: String, required: true },
+  hiringDate: { type: String, required: true }
 }, {
   timestamps: false
 })

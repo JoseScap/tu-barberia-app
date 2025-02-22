@@ -17,7 +17,7 @@ const BarberCreateForm = ({
   barber,
   onSubmit,
   onCancel,
-  onChange,
+  onChange
 }: {
   barber: BarberCreateRequest
   onSubmit: () => void
@@ -70,7 +70,7 @@ const BarberUpdateForm = ({
   barber,
   onSubmit,
   onCancel,
-  onChange,
+  onChange
 }: {
   barber: BarberUpdateRequest
   onSubmit: () => void
@@ -177,7 +177,7 @@ export default function BarbersPage() {
     selectedBarber,
     selectBarberForEdit,
     updateSelectedBarber,
-    updateBarberForm,
+    updateBarberForm
   } = useBarbers()
 
   const startTour = () => {

@@ -1,6 +1,6 @@
-import { connectToDatabase } from "@/database"
-import { Barber, BarberUpdateRequest, mapFromDomainToResponse, mapFromRequestToDomain } from "@/schema/Barber"
-import { NextResponse } from "next/server"
+import { connectToDatabase } from '@/database'
+import { Barber, BarberUpdateRequest, mapFromDomainToResponse, mapFromRequestToDomain } from '@/schema/Barber'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   await connectToDatabase()
@@ -19,11 +19,11 @@ export async function PUT(request: Request) {
   try {
     await connectToDatabase()
     const body = await request.json() as BarberUpdateRequest
-    
+
     const barber = await Barber.findById(body._id)
     if (!barber) {
       return NextResponse.json(
-        { error: "Barbero no encontrado" },
+        { error: 'Barbero no encontrado' },
         { status: 404 }
       )
     }
@@ -39,10 +39,8 @@ export async function PUT(request: Request) {
   } catch (error) {
     console.error('Error updating barber:', error)
     return NextResponse.json(
-      { error: "Error al actualizar el barbero" },
+      { error: 'Error al actualizar el barbero' },
       { status: 500 }
     )
   }
 }
-
-
