@@ -11,6 +11,7 @@ import Input from '@/components/form/input/InputField'
 import useBarbers from '@/hooks/useBarbers'
 import { driver, DriveStep } from 'driver.js'
 import { Barber, BarberCreateRequest, BarberUpdateRequest } from '@/schema/Barber'
+import Select from '@/components/form/Select'
 
 // Components
 const BarberCreateForm = ({
@@ -76,48 +77,64 @@ const BarberUpdateForm = ({
   onSubmit: () => void
   onCancel: () => void
   onChange: (barber: BarberUpdateRequest) => void
-}) => (
-  <ComponentCard title="Editar Barbero">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <Label>Nombre Completo</Label>
-        <Input
-          type="text"
-          defaultValue={barber.fullName}
-          onChange={(e) => onChange({ ...barber, fullName: e.target.value })}
-        />
-      </div>
-      <div>
-        <Label htmlFor="datePicker">Fecha de Contratación</Label>
-        <div className="relative">
+}) => {
+  const statusOptions = [
+    { value: 'true', label: 'Activo' },
+    { value: 'false', label: 'Inactivo' }
+  ]
+
+  return (
+    <ComponentCard title="Editar Barbero">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <Label>Nombre Completo</Label>
           <Input
-            type="date"
-            id="datePicker"
-            name="datePicker"
-            defaultValue={barber.hiringDate ? new Date(barber.hiringDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => onChange({ ...barber, hiringDate: e.target.value })}
+            type="text"
+            defaultValue={barber.fullName}
+            onChange={(e) => onChange({ ...barber, fullName: e.target.value })}
           />
-          <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-            <CalenderIcon />
-          </span>
+        </div>
+        <div>
+          <Label htmlFor="datePicker">Fecha de Contratación</Label>
+          <div className="relative">
+            <Input
+              type="date"
+              id="datePicker"
+              name="datePicker"
+              defaultValue={barber.hiringDate ? new Date(barber.hiringDate).toISOString().split('T')[0] : ''}
+              onChange={(e) => onChange({ ...barber, hiringDate: e.target.value })}
+            />
+            <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+              <CalenderIcon />
+            </span>
+          </div>
+        </div>
+        <div className="col-span-full">
+          <Label>Estado</Label>
+          <Select
+            options={statusOptions}
+            defaultValue={barber.status ? 'true' : 'false'}
+            onChange={(value) => onChange({ ...barber, status: value === 'true' })}
+            className="dark:bg-dark-900"
+          />
+        </div>
+        <div className="col-span-full space-y-2">
+          <Button className="w-full" size="sm" onClick={onSubmit}>
+            Actualizar Barbero
+          </Button>
+          <Button
+            className="w-full"
+            size="sm"
+            variant="outline"
+            onClick={onCancel}
+          >
+            Cancelar
+          </Button>
         </div>
       </div>
-      <div className="col-span-full space-y-2">
-        <Button className="w-full" size="sm" onClick={onSubmit}>
-          Actualizar Barbero
-        </Button>
-        <Button
-          className="w-full"
-          size="sm"
-          variant="outline"
-          onClick={onCancel}
-        >
-          Cancelar
-        </Button>
-      </div>
-    </div>
-  </ComponentCard>
-)
+    </ComponentCard>
+  )
+}
 
 // Tour Configuration
 const getTourSteps = () => [
