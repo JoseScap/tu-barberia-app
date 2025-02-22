@@ -1,8 +1,8 @@
-import ComponentCard from "@/components/common/ComponentCard";
-import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import BasicTableOne from "@/components/tables/BasicTableOne";
+import ComponentCard from '@/components/common/ComponentCard'
+import PageBreadcrumb from '@/components/common/PageBreadCrumb'
+import BasicTableOne from '@/components/tables/BasicTableOne'
 
-import React from "react";
+import React from 'react'
 
 export default function BasicTables() {
   return (
@@ -14,5 +14,5 @@ export default function BasicTables() {
         </ComponentCard>
       </div>
     </div>
-  );
+  )
 }

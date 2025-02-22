@@ -1,19 +1,19 @@
-import { Outfit } from "next/font/google";
-import "./globals.css";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
-import { SidebarProvider } from "@/context/SidebarContext";
-import { ThemeProvider } from "@/context/ThemeContext";
+import { Outfit } from 'next/font/google'
+import './globals.css'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/autoplay'
+import { SidebarProvider } from '@/context/SidebarContext'
+import { ThemeProvider } from '@/context/ThemeContext'
 
 const outfit = Outfit({
-  variable: "--font-outfit-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-outfit-sans',
+  subsets: ['latin']
+})
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -25,5 +25,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

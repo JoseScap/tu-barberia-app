@@ -1,15 +1,17 @@
-import React from "react";
+import React from 'react'
 import {
   Table,
   TableBody,
   TableCell,
   TableHeader,
-  TableRow,
-} from "../ui/table";
+  TableRow
+} from '../ui/table'
+import Button from '../ui/button/Button'
+import { PencilIcon, TrashBinIcon } from '@/icons'
 
 export type ColumnKey<T> = keyof T;
 export type ColumnValue<T> = T[ColumnKey<T>];
-export type ColumnAlign = "start" | "center" | "end";
+export type ColumnAlign = 'start' | 'center' | 'end';
 
 // Definimos los tipos para las columnas
 export interface TableColumn<T> {
@@ -24,17 +26,19 @@ export interface GenericTableProps<T> {
   data: T[];
   className?: string;
   actionsHeader?: string;
-  ActionsComponents?: React.ReactNode[];
   id?: string;
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
 export default function GenericTable<T extends object>({
   columns,
   data,
-  className = "",
+  className = '',
   actionsHeader,
-  ActionsComponents,
-  id,
+  onEdit,
+  onDelete,
+  id
 }: GenericTableProps<T>) {
   return (
     <div className={`overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] ${className}`}>
@@ -47,7 +51,7 @@ export default function GenericTable<T extends object>({
                   <TableCell
                     key={String(column.key)}
                     isHeader
-                    className={`px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400`}
+                    className={'px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400'}
                   >
                     {column.header}
                   </TableCell>
@@ -55,7 +59,7 @@ export default function GenericTable<T extends object>({
                 {actionsHeader && (
                   <TableCell
                     isHeader
-                    className={`px-5 py-3 font-medium text-gray-500 text-end text-theme-xs dark:text-gray-400`}
+                    className={'px-5 py-3 font-medium text-gray-500 text-end text-theme-xs dark:text-gray-400'}
                   >
                     {actionsHeader}
                   </TableCell>
@@ -69,22 +73,31 @@ export default function GenericTable<T extends object>({
                   {columns.map((column) => (
                     <TableCell
                       key={String(column.key)}
-                      className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400`}
+                      className={'px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400'}
                     >
                       {column.render
                         ? column.render(row[column.key], row)
                         : String(row[column.key])}
                     </TableCell>
                   ))}
-                  {actionsHeader !== undefined && ActionsComponents && (
+                  {actionsHeader !== undefined && (
                     <TableCell
-                      className={`px-4 py-3 flex items-center justify-end gap-2 text-gray-500 text-end text-theme-sm dark:text-gray-400`}
+                      className={'px-4 py-3 flex items-center justify-end gap-2 text-gray-500 text-end text-theme-sm dark:text-gray-400'}
                     >
-                      {ActionsComponents.map((component, index) => (
-                        <React.Fragment key={index}>
-                          {component}
-                        </React.Fragment>
-                      ))}
+                      <Button
+                        key="edit-barber"
+                        size="sm"
+                        startIcon={<PencilIcon />}
+                        id="barber-edit-action"
+                        onClick={() => onEdit?.(row)}
+                      />
+                      <Button
+                        key="delete-barber"
+                        size="sm"
+                        startIcon={<TrashBinIcon />}
+                        id="barber-delete-action"
+                        onClick={() => onDelete?.(row)}
+                      />
                     </TableCell>
                   )}
                 </TableRow>
@@ -94,5 +107,5 @@ export default function GenericTable<T extends object>({
         </div>
       </div>
     </div>
-  );
-} 
+  )
+}

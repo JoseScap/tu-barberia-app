@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface CheckboxProps {
   label?: string; // Optional label for the checkbox
@@ -14,13 +14,13 @@ const Checkbox: React.FC<CheckboxProps> = ({
   checked,
   id,
   onChange,
-  className = "",
-  disabled = false,
+  className = '',
+  disabled = false
 }) => {
   return (
     <label
       className={`flex items-center space-x-3 cursor-pointer ${
-        disabled ? "cursor-not-allowed opacity-60" : ""
+        disabled ? 'cursor-not-allowed opacity-60' : ''
       }`}
     >
       <input
@@ -37,7 +37,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         </span>
       )}
     </label>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

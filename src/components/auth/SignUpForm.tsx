@@ -1,14 +1,14 @@
-"use client";
-import Checkbox from "@/components/form/input/Checkbox";
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
-import { EyeCloseIcon, EyeIcon } from "@/icons";
-import Link from "next/link";
-import React, { useState } from "react";
+'use client'
+import Checkbox from '@/components/form/input/Checkbox'
+import Input from '@/components/form/input/InputField'
+import Label from '@/components/form/Label'
+import { EyeCloseIcon, EyeIcon } from '@/icons'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
 export default function SignUpForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   return (
     <div className="flex flex-col flex-1 p-6 rounded-2xl sm:rounded-none sm:border-0 sm:p-8">
       <div className="w-full max-w-md pt-5 mx-auto sm:py-10">
@@ -145,17 +145,19 @@ export default function SignUpForm() {
                 <div className="relative">
                   <Input
                     placeholder="Enter your password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                   />
                   <span
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                   >
-                    {showPassword ? (
+                    {showPassword
+                      ? (
                       <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
-                    ) : (
+                        )
+                      : (
                       <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
-                    )}
+                        )}
                   </span>
                 </div>
               </div>
@@ -167,11 +169,11 @@ export default function SignUpForm() {
                   onChange={setIsChecked}
                 />
                 <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
-                  By creating an account means you agree to the{" "}
+                  By creating an account means you agree to the{' '}
                   <span className="text-gray-800 dark:text-white/90">
                     Terms and Conditions,
-                  </span>{" "}
-                  and our{" "}
+                  </span>{' '}
+                  and our{' '}
                   <span className="text-gray-800 dark:text-white">
                     Privacy Policy
                   </span>
@@ -199,5 +201,5 @@ export default function SignUpForm() {
         </div>
       </div>
     </div>
-  );
+  )
 }

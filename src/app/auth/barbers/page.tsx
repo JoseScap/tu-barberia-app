@@ -1,104 +1,70 @@
-"use client";
-import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import GenericTable, { TableColumn, ColumnValue } from "@/components/tables/GenericTable";
-import React from "react";
-import Badge from "@/components/ui/badge/Badge";
-import Button from "@/components/ui/button/Button";
-import { PencilIcon, PlusIcon, TrashBinIcon, DocsIcon } from "@/icons";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
-
-interface Barber {
-  id: string;
-  fullName: string;
-  status: boolean;
-  hiringDate: string;
-}
-
-const columns: TableColumn<Barber>[] = [
-  {
-    key: "fullName",
-    header: "Nombre Completo",
-  },
-  {
-    key: "status",
-    header: "Estado",
-    render: (value: ColumnValue<Barber>) => {
-      return (
-        <Badge
-          color={value ? "success" : "error"}
-          size="sm"
-        >
-          {value ? "Activo" : "Inactivo"}
-        </Badge>
-      );
-    },
-  },
-  {
-    key: "hiringDate",
-    header: "Fecha de Contratación",
-  },
-];
-
-// Define the table data using the interface
-const tableData: Barber[] = [
-  {
-    id: "1",
-    fullName: "Juan Perez",
-    status: true,
-    hiringDate: "2024-01-01",
-  },
-  {
-    id: "2",
-    fullName: "Juan Perez",
-    status: true,
-    hiringDate: "2024-01-01",
-  },
-];
+'use client'
+import React from 'react'
+import PageBreadcrumb from '@/components/common/PageBreadCrumb'
+import GenericTable from '@/components/tables/GenericTable'
+import Button from '@/components/ui/button/Button'
+import { PlusIcon, DocsIcon, CalenderIcon } from '@/icons'
+import 'driver.js/dist/driver.css'
+import ComponentCard from '@/components/common/ComponentCard'
+import Label from '@/components/form/Label'
+import Input from '@/components/form/input/InputField'
+import useBarbers, { Barber } from '@/hooks/useBarbers'
+import { driver } from 'driver.js'
 
 export default function BarbersPage() {
+  const { barbers, showNewBarberForm, toggleNewBarberForm, columns, newBarber, setNewBarber, addBarber, editBarber, changeEditBarber, updateBarber } = useBarbers()
+  const tableData = barbers
+
   const startTour = () => {
     const driverObj = driver({
       showProgress: true,
       steps: [
         {
-          element: "#barbers-title",
+          element: '#barbers-title',
           popover: {
-            title: "Gestión de Barberos",
-            description: "En esta sección podrás administrar todos los barberos de tu negocio.",
-            side: "bottom",
-            align: "start"
+            title: 'Gestión de Barberos',
+            description: 'En esta sección podrás administrar todos los barberos de tu negocio.',
+            side: 'bottom',
+            align: 'start'
           }
         },
         {
-          element: "#add-barber-btn",
+          element: '#add-barber-btn',
           popover: {
-            title: "Agregar Nuevo Barbero",
-            description: "Haz clic aquí para registrar un nuevo barbero en el sistema.",
-            side: "left"
+            title: 'Agregar Nuevo Barbero',
+            description: 'Haz clic aquí para registrar un nuevo barbero en el sistema.',
+            side: 'left'
           }
         },
         {
-          element: "#barbers-table",
+          element: '#barbers-table',
           popover: {
-            title: "Lista de Barberos",
-            description: "Aquí encontrarás todos los barberos registrados con su información principal.",
-            side: "top"
+            title: 'Lista de Barberos',
+            description: 'Aquí encontrarás todos los barberos registrados con su información principal.',
+            side: 'top'
           }
         },
         {
-          element: "#barber-actions",
+          element: '#barber-edit-action',
           popover: {
-            title: "Acciones",
-            description: "Desde aquí podrás editar o eliminar la información de cada barbero.",
-            side: "left"
+            title: 'Editar Barbero',
+            description: 'Desde aquí podrás editar la información del barbero seleccionado.',
+            side: 'left'
+          }
+        },
+        {
+          element: '#barber-delete-action',
+          popover: {
+            title: 'Eliminar Barbero',
+            description: 'Desde aquí podrás eliminar el barbero seleccionado.',
+            side: 'left'
           }
         }
       ]
-    });
+    })
 
-    driverObj.drive();
-  };
+    driverObj.drive()
+  }
 
   return (
     <div>
@@ -107,45 +73,118 @@ export default function BarbersPage() {
         id="barbers-title"
         TitleExtraComponent={
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            <DocsIcon 
-              className="text-brand-500 cursor-pointer" 
+            <DocsIcon
+              className="text-brand-500 cursor-pointer"
               onClick={startTour}
             />
           </span>
         }
         RightComponent={
-          <Button 
-            key="add-barber" 
-            size="sm" 
-            variant="outline" 
+          <Button
+            key="add-barber"
+            size="sm"
             startIcon={<PlusIcon />}
             id="add-barber-btn"
+            onClick={toggleNewBarberForm}
           />
         }
       />
+      {showNewBarberForm && (
+        <div className="space-y-6 mb-6">
+          <ComponentCard title="Agregar Barbero">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label>Nombre Completo</Label>
+                <Input
+                  type="text"
+                  onChange={(e) => setNewBarber({ ...newBarber, fullName: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="datePicker">Fecha de Contratación</Label>
+                <div className="relative">
+                  <Input
+                    type="date"
+                    id="datePicker"
+                    name="datePicker"
+                    defaultValue={newBarber.hiringDate}
+                    onChange={(e) => setNewBarber({ ...newBarber, hiringDate: e.target.value })}
+                  />
+                  <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+                    <CalenderIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="col-span-full space-y-2">
+                <Button className="w-full" size="sm" onClick={addBarber}>
+                  Agregar Barbero
+                </Button>
+                <Button
+                  className="w-full"
+                  size="sm"
+                  variant="outline"
+                  onClick={toggleNewBarberForm}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          </ComponentCard>
+        </div>
+      )}
+      {!!editBarber && (
+        <div className="space-y-6 mb-6">
+          <ComponentCard title="Agregar Barbero">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label>Nombre Completo</Label>
+                <Input
+                  type="text"
+                  defaultValue={editBarber?.fullName}
+                  onChange={(e) => setNewBarber({ ...newBarber, fullName: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="datePicker">Fecha de Contratación</Label>
+                <div className="relative">
+                  <Input
+                    type="date"
+                    id="datePicker"
+                    name="datePicker"
+                    defaultValue={new Date(editBarber.hiringDate).toISOString().split('T')[0]}
+                    onChange={(e) => setNewBarber({ ...newBarber, hiringDate: e.target.value })}
+                  />
+                  <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+                    <CalenderIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="col-span-full space-y-2">
+                <Button className="w-full" size="sm" onClick={() => updateBarber()}>
+                  Actualizar Barbero
+                </Button>
+                <Button
+                  className="w-full"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => changeEditBarber()}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          </ComponentCard>
+        </div>
+      )}
       <div className="space-y-6">
         <GenericTable<Barber>
           columns={columns}
           data={tableData}
           actionsHeader="Acciones"
           id="barbers-table"
-          ActionsComponents={[
-            <Button 
-              key="edit-barber" 
-              size="sm" 
-              variant="outline" 
-              startIcon={<PencilIcon />}
-              id="barber-actions"
-            />,
-            <Button 
-              key="delete-barber" 
-              size="sm" 
-              variant="outline" 
-              startIcon={<TrashBinIcon />} 
-            />,
-          ]}
+          onEdit={(row) => changeEditBarber(row.id)}
         />
       </div>
     </div>
-  );
+  )
 }

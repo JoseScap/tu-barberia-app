@@ -1,4 +1,4 @@
-import React, { ReactNode, PropsWithChildren } from "react";
+import React, { ReactNode, PropsWithChildren } from 'react'
 
 // Props for Table
 interface TableProps extends PropsWithChildren {
@@ -33,32 +33,32 @@ interface TableCellProps {
 
 // Table Component
 const Table: React.FC<TableProps> = ({ children, className, id }) => {
-  return <table className={`min-w-full  ${className}`} id={id}>{children}</table>;
-};
+  return <table className={`min-w-full  ${className}`} id={id}>{children}</table>
+}
 
 // TableHeader Component
 const TableHeader: React.FC<TableHeaderProps> = ({ children, className }) => {
-  return <thead className={className}>{children}</thead>;
-};
+  return <thead className={className}>{children}</thead>
+}
 
 // TableBody Component
 const TableBody: React.FC<TableBodyProps> = ({ children, className }) => {
-  return <tbody className={className}>{children}</tbody>;
-};
+  return <tbody className={className}>{children}</tbody>
+}
 
 // TableRow Component
 const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
-  return <tr className={className}>{children}</tr>;
-};
+  return <tr className={className}>{children}</tr>
+}
 
 // TableCell Component
 const TableCell: React.FC<TableCellProps> = ({
   children,
   isHeader = false,
-  className,
+  className
 }) => {
-  const CellTag = isHeader ? "th" : "td";
-  return <CellTag className={` ${className}`}>{children}</CellTag>;
-};
+  const CellTag = isHeader ? 'th' : 'td'
+  return <CellTag className={` ${className}`}>{children}</CellTag>
+}
 
-export { Table, TableHeader, TableBody, TableRow, TableCell };
+export { Table, TableHeader, TableBody, TableRow, TableCell }

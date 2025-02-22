@@ -1,8 +1,8 @@
-import React from "react";
-import { useTheme } from "../../context/ThemeContext";
+import React from 'react'
+import { useTheme } from '../../context/ThemeContext'
 
 export const ThemeToggleButton: React.FC = () => {
-  const { toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme()
 
   return (
     <button
@@ -38,5 +38,5 @@ export const ThemeToggleButton: React.FC = () => {
         />
       </svg>
     </button>
-  );
-};
+  )
+}

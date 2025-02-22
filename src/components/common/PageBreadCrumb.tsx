@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link'
+import React from 'react'
 
 interface BreadcrumbProps {
   pageTitle: string;
@@ -13,6 +13,7 @@ const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle, TitleExtraCompon
     <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
       <h2
         className="text-xl font-semibold text-gray-800 dark:text-white/90 flex items-center gap-2"
+        // eslint-disable-next-line react/no-unknown-property
         x-text="pageName"
         id={id}
       >
@@ -60,7 +61,7 @@ const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle, TitleExtraCompon
         </ol>
       </nav>
     </div>
-  );
-};
+  )
+}
 
-export default PageBreadcrumb;
+export default PageBreadcrumb
